@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Suggestions</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+            color: #fff;
+            transition: background 0.5s, color 0.5s;
+            overflow-x: hidden;
+        }
+
+        body.light {
+            background: linear-gradient(135deg, #f0f0f0 0%, #dcdcdc 100%);
+            color: #333;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .overlay {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .animated-title {
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #00e6e6, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 230, 230, 0.7);
+            animation: pulse 2s infinite;
+        }
+
+        .suggestions {
+            width: 700px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 230, 230, 0.3);
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 230, 230, 0.2);
+        }
+
+        body.light .suggestions {
+            background: rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.3);
+        }
+
+        .suggestion-card {
+            margin: 15px 0;
+            padding: 20px;
+            background: rgba(0, 230, 230, 0.2);
+            border-radius: 10px;
+            animation: slideIn 0.5s ease;
+        }
+
+        body.light .suggestion-card {
+            background: rgba(0, 102, 102, 0.2);
+        }
+
+        .suggestion-card h3 {
+            margin: 0 0 15px;
+            color: #ffd700;
+            font-size: 1.5em;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ffd700, #ffaa00);
+            color: #333;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        #themeToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #00e6e6;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="overlay">
+        <button id="themeToggle" onclick="toggleTheme()">Dark Mode</button>
+        <div class="header">
+            <h1 class="animated-title">Design Suggestions</h1>
+        </div>
+        <div class="suggestions" id="suggestions">
+            <div id="suggestionContent"></div>
+            <div class="actions">
+                <button class="action-btn" onclick="goToDesignPage()">View Design</button>
+                <button class="action-btn" onclick="saveSuggestions()">Save Suggestions</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Particles.js Configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#00e6e6" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00e6e6", "opacity": 0.4, "width": 1 },
+                "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+                "modes": { "repulse": { "distance": 100, "duration": 0.4 }, "push": { "particles_nb": 4 } }
+            },
+            "retina_detect": true
+        });
+
+        // Display Detailed Suggestions
+        let currentProject = "";
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentProject = urlParams.get("project") || "Generic App";
+            const suggestionContent = document.getElementById("suggestionContent");
+            suggestionContent.innerHTML = formatSuggestions(generateDetailedSuggestions(currentProject));
+            document.getElementById("suggestions").style.display = "block";
+        };
+
+        function generateDetailedSuggestions(project) {
+            const projectLower = project.toLowerCase();
+            let tools = "Figma for wireframing and prototyping, Adobe XD for high-fidelity designs, VS Code for coding with extensions like Live Server.";
+            let apis = "Google Maps API for location services, Stripe API for secure payments.";
+            let personalize = `
+                - **Layout**: Sticky header with navigation, grid-based main content, and a footer with quick links.
+                - **Color Scheme**: Primary: Blue (#007bff), Secondary: Light Gray (#e0e0e0), Accent: White (#ffffff).
+                - **Typography**: Use Roboto for body text (14-16px) and Montserrat for headings (24-32px).
+                - **Components**: Rounded buttons with hover effects, card components with subtle shadows, and a responsive navbar.
+            `;
+
+            if (projectLower.includes("food")) {
+                tools = "Figma for designing interactive menus, Photoshop for food visuals, VS Code for coding with Prettier.";
+                apis = "Google Maps API for delivery tracking, OpenFoodFacts API for nutritional data.";
+                personalize = `
+                    - **Layout**: Fixed header with search bar, card-based menu items in a 3-column grid, and a sticky footer with order summary.
+                    - **Color Scheme**: Primary: Red (#ff0000), Secondary: Yellow (#ffff00), Accent: White (#ffffff).
+                    - **Typography**: Use Poppins for a friendly vibe (16px body, 28px headings).
+                    - **Components**: Large image-based cards for dishes, animated 'Add to Cart' buttons, and a progress bar for delivery status.
+                `;
+            } else if (projectLower.includes("e-commerce")) {
+                tools = "Sketch for layouts, Adobe XD for animations, Sublime Text for lightweight coding.";
+                apis = "Stripe API for payments, Algolia API for fast product search.";
+                personalize = `
+                    - **Layout**: Top navbar with categories, 4-column product grid, and a sidebar for filters.
+                    - **Color Scheme**: Primary: Black (#000000), Secondary: Gold (#ffd700), Accent: White (#ffffff).
+                    - **Typography**: Use Lato for elegance (14px body, 26px headings).
+                    - **Components**: Product cards with hover zoom, a sticky cart widget, and pagination for product pages.
+                `;
+            } else if (projectLower.includes("social")) {
+                tools = "Figma for collaborative design, Illustrator for custom icons, Atom for coding.";
+                apis = "Firebase API for real-time updates, Unsplash API for high-quality images.";
+                personalize = `
+                    - **Layout**: Collapsible sidebar for navigation, infinite-scroll feed, and a top bar for notifications.
+                    - **Color Scheme**: Primary: Purple (#800080), Secondary: Light Purple (#e0b0ff), Accent: White (#ffffff).
+                    - **Typography**: Use Open Sans for readability (16px body, 30px headings).
+                    - **Components**: Post cards with like/comment buttons, a floating action button for new posts, and profile avatars with hover effects.
+                `;
+            }
+
+            return `
+                <h3>1. Utilize the Relevant Tools</h3>
+                ${tools} These tools streamline your workflow for ${project}.\n
+                <h3>2. Fetch Relevant API</h3>
+                Integrate ${apis} to enhance functionality and user experience.\n
+                <h3>3. Integrate with Your Project and Personalize It</h3>
+                ${personalize}
+            `;
+        }
+
+        function formatSuggestions(text) {
+            const lines = text.split("\n").filter(line => line.trim());
+            let html = "";
+            lines.forEach(line => {
+                if (line.startsWith("<h3>")) {
+                    html += `${line}</h3>`;
+                } else {
+                    html += `<div>${line}</div>`;
+                }
+            });
+            return `<div class="suggestion-card">${html}</div>`;
+        }
+
+        // Go to Design Page
+        function goToDesignPage() {
+            window.location.href = `design.html?project=${encodeURIComponent(currentProject)}&rand=${Math.random()}`;
+        }
+
+        // Save Suggestions
+        function saveSuggestions() {
+            const content = document.getElementById("suggestionContent").innerText;
+            const savedDesigns = JSON.parse(localStorage.getItem("savedDesigns") || "[]");
+            savedDesigns.push({ project: currentProject, design: content });
+            localStorage.setItem("savedDesigns", JSON.stringify(savedDesigns));
+            alert("Suggestions saved! Check console for saved designs.");
+            console.log("Saved Designs:", savedDesigns);
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+            const toggleBtn = document.getElementById("themeToggle");
+            toggleBtn.textContent = document.body.classList.contains("light") ? "Dark Mode" : "Light Mode";
+        }
+    </script>
+</body>
+</html>

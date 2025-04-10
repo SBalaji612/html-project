@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Design</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a1a, #0a0a0a);
+        }
+
+        .overlay {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .animated-title {
+            font-size: 3.5em;
+            background: linear-gradient(45deg, #00e6e6, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(0, 230, 230, 0.8), 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .design-box {
+            width: 1100px;
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            padding: 40px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 230, 230, 0.1);
+        }
+
+        /* Website Styles */
+        .website-header {
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.8), rgba(0, 230, 230, 0.8));
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 25px rgba(0, 123, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .website-header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .navbar {
+            display: flex;
+            gap: 25px;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 230, 230, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 123, 255, 0.2));
+            padding: 60px;
+            text-align: center;
+            border-bottom: 1px solid rgba(0, 230, 230, 0.2);
+            border-radius: 0;
+        }
+
+        .hero h2 {
+            margin: 0;
+            font-size: 3em;
+            background: linear-gradient(45deg, #ffd700, #00e6e6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            color: #b0b0b0;
+            margin: 10px 0 20px;
+        }
+
+        .hero .cta {
+            background: linear-gradient(45deg, #ff007a, #ffd700);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 0, 122, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .hero .cta:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(255, 0, 122, 0.7);
+        }
+
+        .main-content {
+            padding: 40px;
+            background: rgba(30, 30, 30, 0.95);
+            border-radius: 0;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: rgba(40, 40, 40, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(0, 230, 230, 0.1);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 230, 230, 0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotate(2deg);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 230, 230, 0.4);
+        }
+
+        .card h4 {
+            margin: 0 0 15px;
+            font-size: 1.5em;
+            color: #00e6e6;
+            text-shadow: 0 0 10px rgba(0, 230, 230, 0.5);
+        }
+
+        .card p {
+            color: #b0b0b0;
+            font-size: 1.1em;
+        }
+
+        .explore-more {
+            width: 100%;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(0, 123, 255, 0.1));
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            margin: 40px 0;
+            border: 1px solid rgba(0, 230, 230, 0.2);
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .explore-more h3 {
+            color: #ffd700;
+            font-size: 2em;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            width: 100%;
+            text-align: center;
+            margin: 0 0 30px;
+        }
+
+        .explore-item {
+            background: rgba(40, 40, 40, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            width: 220px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .explore-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 230, 230, 0.3);
+        }
+
+        .explore-item a {
+            color: #00e6e6;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(0, 230, 230, 0.5);
+        }
+
+        .explore-item a:hover {
+            color: #ffd700;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, #007bff, #00e6e6);
+            padding: 30px;
+            text-align: center;
+            color: #fff;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 -5px 25px rgba(0, 123, 255, 0.3);
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 1.2em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #ffd700, #ff007a);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 20px 40px;
+            font-size: 1.5em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 0, 122, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 0, 122, 0.7);
+        }
+
+        #themeToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #00e6e6, #007bff);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 230, 230, 0.5);
+            transition: transform 0.3s;
+        }
+
+        #themeToggle:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div class="overlay">
+        <button id="themeToggle" onclick="toggleTheme()">Light Mode</button>
+        <div class="header">
+            <h1 class="animated-title">Your Design</h1>
+        </div>
+        <div class="design-box">
+            <div id="designPreview"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        // Enhanced 3D Particles.js Configuration
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#00e6e6", "#ffd700", "#ff007a"] },
+                "shape": { "type": ["circle", "triangle", "star"] },
+                "opacity": { "value": 0.7, "random": true },
+                "size": { "value": 5, "random": true },
+                "line_linked": { "enable": true, "distance": 150, "color": "#00e6e6", "opacity": 0.3, "width": 1.5 },
+                "move": { "enable": true, "speed": 4, "direction": "random", "random": true, "straight": false, "out_mode": "bounce" }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "repulse" } },
+                "modes": { "grab": { "distance": 200, "line_linked": { "opacity": 0.5 } }, "repulse": { "distance": 150 } }
+            },
+            "retina_detect": true
+        });
+
+        // Display High-Quality Design
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const project = urlParams.get("project") || "Generic App";
+            const cleanedProject = cleanProjectName(project); // Extract only the project name
+            const designPreview = document.getElementById("designPreview");
+            designPreview.innerHTML = generateHighQualityDesign(cleanedProject);
+        };
+
+        function cleanProjectName(project) {
+            // Remove common filler phrases and keep only the project name
+            let cleaned = project.toLowerCase()
+                .replace(/i want(ed)? to design a(n)?/gi, "")
+                .replace(/app|website|platform/gi, "")
+                .trim()
+                .replace(/\s+/g, " "); // Replace multiple spaces with single space
+            return cleaned || "Generic App"; // Default if nothing meaningful remains
+        }
+
+        function generateHighQualityDesign(project) {
+            const projectLower = project.toLowerCase();
+            const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            const cardCount = Math.floor(Math.random() * 3) + 4; // 4-6 cards
+            const hasExploreMore = Math.random() > 0.3; // 70% chance for explore more
+
+            let baseColor = projectLower.includes("food") ? "#ff007a" : projectLower.includes("e-commerce") ? "#1e90ff" : "#ff00ff";
+            let contentType = projectLower.includes("food") ? "Menu Item" : projectLower.includes("e-commerce") ? "Product" : "Post";
+            let buttonText = projectLower.includes("food") ? "Order Now" : projectLower.includes("e-commerce") ? "Add to Cart" : "Like";
+            let heroText = projectLower.includes("food") ? "Savor the Flavor" : projectLower.includes("e-commerce") ? "Unleash Your Shopping Spree" : "Join the Buzz";
+
+            let designHTML = `
+                <h3 style="text-align: center; margin-bottom: 30px;">Full Website Preview for ${project}</h3>
+                <div style="background: rgba(10, 10, 10, 0.9); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 50px rgba(0, 0, 0, 0.8);">
+                    <div class="website-header" style="background: linear-gradient(135deg, ${baseColor}, rgba(0, 230, 230, 0.8));">
+                        <h1>${project}</h1>
+                        <div class="navbar">
+                            <a href="#">Home</a>
+                            <a href="#">About</a>
+                            <a href="#">Contact Us</a>
+                        </div>
+                    </div>
+                    <div class="hero">
+                        <h2>${heroText}</h2>
+                        <p>Experience ${project} like never before - sleek, modern, and vibrant!</p>
+                        <button class="cta">${buttonText}</button>
+                    </div>
+                    <div class="main-content">
+                        <div class="cards-container">
+            `;
+
+            for (let i = 0; i < cardCount; i++) {
+                designHTML += `
+                    <div class="card" style="animation: float 6s ease-in-out infinite ${i * 0.5}s;">
+                        <h4>${contentType} ${i + 1}</h4>
+                        <p>${projectLower.includes("food") ? "Freshly crafted delight!" : projectLower.includes("e-commerce") ? "Limited time offer!" : "Hot topic right now!"}</p>
+                    </div>
+                `;
+            }
+
+            designHTML += `
+                        </div>
+            `;
+
+            if (hasExploreMore) {
+                designHTML += `
+                    <div class="explore-more">
+                        <h3>Explore More</h3>
+                        <div class="explore-item">
+                            <a href="#">Profile</a>
+                        </div>
+                        <div class="explore-item">
+                            <a href="#">Settings</a>
+                        </div>
+                        <div class="explore-item">
+                            <a href="#">Support</a>
+                        </div>
+                        <div class="explore-item">
+                            <a href="#">FAQ</a>
+                        </div>
+                        <div class="explore-item">
+                            <a href="#">Blog</a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            designHTML += `
+                        <div style="text-align: center; margin-top: 40px;">
+                            <button class="cta-button" style="background: ${randomColor};">${buttonText}</button>
+                        </div>
+                    </div>
+                    <div class="footer">
+                        <p>© 2025 ${project} - Designed with Passion</p>
+                    </div>
+                </div>
+            `;
+
+            return designHTML;
+        }
+
+        // Theme Toggle (Dark Mode Default)
+        function toggleTheme() {
+            document.body.classList.toggle("light");
+            const toggleBtn = document.getElementById("themeToggle");
+            toggleBtn.textContent = document.body.classList.contains("light") ? "Dark Mode" : "Light Mode";
+        }
+    </script>
+</body>
+</html>
